@@ -1,16 +1,11 @@
 package it.tellnet.gradle
 
-import com.google.common.collect.Sets
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
 
-import java.nio.file.FileSystems
-import java.nio.file.Path
-import java.nio.file.Paths
-import java.nio.file.WatchEvent
-import java.nio.file.WatchKey
-import java.nio.file.WatchService
-import static java.nio.file.StandardWatchEventKinds.*;
+import java.nio.file.*
+
+import static java.nio.file.StandardWatchEventKinds.*
 
 /**
  * @author Radu Andries
@@ -58,9 +53,15 @@ class SassWatchStartTask extends DefaultTask implements Runnable {
                 files.add(ext.sassDir + '/' + filename)
             }
             for(String it : files){
+                def file = project.file(it)
+                if(file.name.startsWith('_')){
+                    println 'Modified an include: ' + it + '. Recompiling everything.'
+                    ((SassCompileTask) project.getTasksByName('sassCompile',false).first()).compileAllCss()
+                    break;
+                }
                 println 'Recompiling ' + it
                 def c = new SassCompilerImpl()
-                c.scss = project.file(it)
+                c.scss = file
                 c.resolver = resolver
                 c.minify = ext.minify
                 c.silent = ext.silenceErrors

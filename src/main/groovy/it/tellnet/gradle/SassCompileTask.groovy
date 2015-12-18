@@ -17,6 +17,10 @@ class SassCompileTask extends DefaultTask {
         File f = project.file(ext.cssDir)
         f.mkdirs()
         tree.each {
+            if(it.name.startsWith('_')){
+                //We should ignore this file.
+                return
+            }
             def scss = new SassCompilerImpl()
             scss.resolver = resolv
             scss.scss = it
