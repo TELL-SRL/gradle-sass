@@ -10,7 +10,7 @@ buildscript {
 }
 
 group 'it.tellnet'
-version '1.1'
+version '1.2'
 
 apply plugin: 'groovy'
 apply plugin: 'maven-publish'

@@ -50,23 +50,8 @@ class SassWatchStartTask extends DefaultTask implements Runnable {
                 String filename = ev.context().toString();
                 if (!filename.endsWith('scss'))
                     continue;
-                files.add(ext.sassDir + '/' + filename)
-            }
-            for(String it : files){
-                def file = project.file(it)
-                if(file.name.startsWith('_')){
-                    println 'Modified an include: ' + it + '. Recompiling everything.'
-                    ((SassCompileTask) project.getTasksByName('sassCompile',false).first()).compileAllCss()
-                    break;
-                }
-                println 'Recompiling ' + it
-                def c = new SassCompilerImpl()
-                c.scss = file
-                c.resolver = resolver
-                c.minify = ext.minify
-                c.silent = ext.silenceErrors
-                c.outDir = new File(ext.cssDir)
-                c.exec()
+                println "Recompiling...."
+                ((SassCompileTask) project.getTasks().getByName('sassCompile')).compileAllCss()
             }
             Thread.sleep(250)
         }
