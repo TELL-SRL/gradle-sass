@@ -9,6 +9,7 @@ class SassPluginExtension {
     String cssDir = 'build/sass'
     boolean minify = false
     boolean silenceErrors = false
+    boolean setCharSet = true
 
     void searchDirectories(String... paths){
         if(paths!=null)
