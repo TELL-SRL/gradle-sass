@@ -3,9 +3,6 @@ package it.tellnet.gradle
 import com.vaadin.sass.internal.ScssStylesheet
 import com.vaadin.sass.internal.handler.SCSSDocumentHandlerImpl
 import com.vaadin.sass.internal.handler.SCSSErrorHandler
-import org.gradle.api.Project
-import org.w3c.css.sac.ErrorHandler
-
 /**
  * @author Radu Andries
  */
@@ -15,6 +12,8 @@ class SassCompilerImpl {
     ProjectAwareResolver resolver
     Boolean minify = false
     Boolean silent = false
+    Boolean setCharSet = true
+
 
     def exec(){
         SCSSErrorHandler handler
@@ -24,7 +23,12 @@ class SassCompilerImpl {
             handler = new SCSSErrorHandler()
         ScssStylesheet sass = ScssStylesheet.get(scss.absolutePath, null, new SCSSDocumentHandlerImpl(),handler)
         sass.setFile(scss)
-        sass.setCharset('UTF-8')
+
+        // setting charset breaks JavaFX CSS generation
+        // and should be turned off for JavaFX applications
+        if ( setCharSet ) {
+            sass.setCharset('UTF-8')
+        }
         sass.addResolver(resolver.getFSResolver())
         sass.addResolver(resolver)
         def basename = scss.getName().replaceAll('\\.scss','.css')

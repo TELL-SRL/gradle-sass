@@ -62,6 +62,8 @@ To configure this plugin you can declare a block as follows:
         minify = false //default value
         //Vaadin sass compiler is pretty verbose about errors
         silenceErrors = false //default value
+        // Ability to turn off charset setting (helpful for JavaFX css generation)
+        setCharSet = true // default value 
         
         /*
         //You can add scan directories to look for SCSS files in the JARs
