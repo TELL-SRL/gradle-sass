@@ -10,7 +10,7 @@ buildscript {
 }
 
 group 'it.tellnet'
-version '1.2'
+version '1.4'
 
 apply plugin: 'groovy'
 apply plugin: 'maven-publish'
@@ -46,4 +46,9 @@ pluginBundle {
       displayName = 'Gradle Sass Plugin'
     }
   }
+}
+
+allprojects {
+    sourceCompatibility = 1.7
+    targetCompatibility = 1.7
 }
